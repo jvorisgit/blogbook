@@ -1,0 +1,52 @@
+$lightgray: #afafaf;
+
+body {
+  background: black;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: $lightgray;
+  width: 300px;
+  gap: 20px;
+  
+  button {
+    padding: 10px;
+    border: none;
+    color: $lightgray;
+    background-color: black;
+    cursor: pointer;
+  }
+
+  input {
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid black;
+  }
+
+  p {
+    font-size: 15px;
+  }
+
+  span {
+    font-size: 15px;
+    text-align: center;
+  }
+
+}
+
+h1 {
+  color:$lightgray;
+  margin-bottom:20px;
+}
+
+.user_authentication {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height:100vh;
+  background-color: black;
+} 

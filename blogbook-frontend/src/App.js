@@ -14,7 +14,7 @@ import View from "./pages/View"
 import BlogBookSidebar from "./components/BlogBookSidebar";
 import BlogBookNavBar from "./components/BlogBookNavBar";
 
-import './App.css';
+import './App.scss';
 
 const Layout = ()=>{
   return (
