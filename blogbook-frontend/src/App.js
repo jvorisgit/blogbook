@@ -11,13 +11,18 @@ import Post from "./pages/Post"
 import Register from "./pages/Register"
 import View from "./pages/View"
 
+import BlogBookSidebar from "./components/BlogBookSidebar";
+
 import './App.css';
 
 const Layout = ()=>{
   return (
     <>
         <div id="app" style={({ height: "100vh" }, { display: "flex" })}>
-          <Outlet></Outlet>
+          <BlogBookSidebar></BlogBookSidebar>
+          <div style={({ width:'100%', alignContent:"center", height: "100vh" })}>
+            <Outlet></Outlet>
+          </div>
         </div>
     </>
   )
