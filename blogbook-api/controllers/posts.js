@@ -45,7 +45,94 @@ export const getBlogEntry = (req,res) => {
 };
 
 export const postBlogEntry = (req,res) => {
-    res.json("");
+    console.log("postBlogEntry");
+    const postCheckQuery = "SELECT id FROM posts WHERE id = ?";
+    
+    db.query(postCheckQuery, [req.body.email], (err,data) => {
+        if (err) {
+            return res.json(err);
+        }
+        if (data.length) {
+            return res.status(409).json("Blog entry with this id already exists");
+        }
+
+        //check if category name exists
+        const checkCategoryQuery = "SELECT id FROM categories WHERE category_name = ?";
+        const checkCategoryQueryValues = [
+            req.body.category_name
+        ]
+
+        db.query(checkCategoryQuery, [checkCategoryQueryValues], (checkCategoryQueryerr,checkCategoryQuerydata) => {
+            if (checkCategoryQueryerr) {
+                return res.json(checkCategoryQueryerr);
+            }
+
+            if (checkCategoryQuerydata.length === 0) {
+                //doesnt exist so add cat
+                const addCategoryQuery = "INSERT INTO categories(`category_name`) VALUES (?)";
+                const addCategoryValues = [
+                    req.body.category_name
+                ];
+
+                db.query(addCategoryQuery, [addCategoryValues], (addCategoryErr,addCategoryData) => {
+                    if (addCategoryErr) {
+                        console.log(addCategoryErr);
+                        return res.status(400).json("There was an error with your post");
+                    }
+                    
+                    //new cat added successfully
+                    //lookup new cat id value
+                    db.query(checkCategoryQuery, [checkCategoryQueryValues], (checkCategoryQueryerr,checkCategoryQuerydata) => {
+                        if (checkCategoryQueryerr) {
+                            return res.json(checkCategoryQueryerr);
+                        }
+
+                        //use new cat id value
+                        const new_category_id = checkCategoryQuerydata[0].id;
+
+                        //use existing cat id value
+                        const addPostQuery = "INSERT INTO posts(`title`,`category_id`,`content`,`author_name`,`created_at`,`user_id`,`status`) VALUES (?)";
+                        const addPostQueryValues = [
+                            req.body.title,
+                            new_category_id,
+                            req.body.content,
+                            req.body.author_name,
+                            new Date(),
+                            req.body.user_id,
+                            req.body.status
+                        ];
+
+                        db.query(addPostQuery, [addPostQueryValues], (err,data) => {
+                            if (err) {
+                                return res.status(400).json("There was an error with your post");
+                            }
+                            return res.status(200).json("New blog entry successfully posted");
+                        });
+                    });
+                });
+            }
+            else{
+                //use existing cat id value
+                const addPostQuery = "INSERT INTO posts(`title`,`category_id`,`content`,`author_name`,`created_at`,`user_id`,`status`) VALUES (?)";
+                const addPostQueryValues = [
+                    req.body.title,
+                    checkCategoryQuerydata[0].id,
+                    req.body.content,
+                    req.body.author_name,
+                    new Date(),
+                    req.body.user_id,
+                    req.body.status
+                ];
+
+                db.query(addPostQuery, [addPostQueryValues], (err,data) => {
+                    if (err) {
+                        return res.status(400).json("There was an error with your post");
+                    }
+                    return res.status(200).json("New blog entry successfully posted");
+                });
+            }
+        });
+    });
 };
 
 export const deleteBlogEntry = (req,res) => {

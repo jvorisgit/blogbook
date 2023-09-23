@@ -16,13 +16,17 @@ form {
     text-align: center;
     color: black;
   }
-  
+
   button {
     padding: 10px;
     border: none;
     color: $mediumgray;
     background-color: black;
     cursor: pointer;
+  }
+
+  div {
+    text-align: center;
   }
 
   input {
@@ -36,9 +40,19 @@ form {
     text-align: center;
   }
 
+  select {
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid black;
+  }
+
   span {
     font-size: 15px;
     text-align: center;
+  }
+
+  textarea {
+    height:20vh;
   }
 
 }

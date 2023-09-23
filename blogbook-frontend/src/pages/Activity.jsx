@@ -54,7 +54,7 @@ function GridItem({ classes, title, content, category_name, author_name, created
 
     return (
       <Grid item xs={12} sm={6} md={3}>
-        <Link class="blogEntryPreview" to={`/view/${id}`}>
+        <Link className="blogEntryPreview" to={`/view/${id}`}>
             <Paper className={classes.paper}>
             <b>{title}</b><br></br>
             <br></br>
@@ -115,6 +115,7 @@ const Activity = () => {
                 {
                     blogEntryPage.currentData().map((blogEntry) => {
                     return (<GridItem 
+                                key={blogEntry.id}
                                 classes={classes} 
                                 id={blogEntry.id}
                                 title={blogEntry.title}

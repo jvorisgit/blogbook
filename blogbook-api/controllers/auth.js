@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import { db } from "../db.js";
 
 export const register = (req,res) => {
-    console.log("register");
     const emailCheckQuery = "SELECT id, email, password FROM users WHERE email = ?";
     
     db.query(emailCheckQuery, [req.body.email], (err,data) => {
