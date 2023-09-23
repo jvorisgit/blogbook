@@ -8,6 +8,7 @@ import {
 import Activity from "./pages/Activity"
 import Login from "./pages/Login"
 import Post from "./pages/Post"
+import EditPost from "./pages/EditPost"
 import Register from "./pages/Register"
 import View from "./pages/View"
 
@@ -54,7 +55,7 @@ const router = createBrowserRouter(
         },
         {
           path: "/Post/:id",
-          element: <Post></Post>
+          element: <EditPost></EditPost>
         },
         {
           path: "/register",

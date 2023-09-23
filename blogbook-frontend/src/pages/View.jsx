@@ -27,7 +27,7 @@ const View = () => {
     }, [blogEntryId]);
 
     return (
-        <div class="content_box">
+        <div className="content_box">
             <form>
                 <h1>{blogEntry.title}</h1>
                 <p>{blogEntry.content}</p>

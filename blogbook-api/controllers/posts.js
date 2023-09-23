@@ -2,7 +2,7 @@ import { db } from "../db.js";
 
 export const getBlogEntries = (req,res) => {
     const getBlogEntriesQuery = req.query.category 
-        ? `SELECT posts.id AS id, posts.title AS title, posts.content AS content, posts.category_id AS category_id, posts.author_name AS author_name, posts.created_at AS created_at, 
+        ? `SELECT posts.id AS id, posts.title AS title, posts.content AS content, posts.category_id AS category_id, posts.author_name AS author_name, posts.created_at AS created_at,
             categories.category_name 
             AS category_name FROM posts LEFT JOIN categories ON posts.category_id = categories.id WHERE status=1 AND category_id = ? ORDER BY created_at DESC`
         : `SELECT posts.id AS id, posts.title AS title, posts.content AS content, posts.category_id AS category_id, posts.author_name AS author_name, posts.created_at AS created_at, 
@@ -32,12 +32,10 @@ export const getBlogCategories = (req,res) => {
 };
 
 export const getBlogEntry = (req,res) => {
-    console.log("getBlogEntry");
-    const getBlogEntryQuery = `SELECT posts.id AS id, posts.title AS title, posts.content AS content, posts.category_id AS category_id, posts.author_name AS author_name, posts.created_at AS created_at, 
+    const getBlogEntryQuery = `SELECT posts.id AS id, posts.title AS title, posts.content AS content, posts.category_id AS category_id, posts.author_name AS author_name, posts.created_at AS created_at, posts.status AS status,
                                 categories.category_name AS category_name
                                 FROM posts LEFT JOIN categories ON posts.category_id = categories.id WHERE posts.id = ?`;
 
-        console.log(req.params.id);
        db.query(getBlogEntryQuery, [req.params.id], (err,data) => {
             if (err) return res.send(err);
             return res.status(200).json(data);
@@ -45,7 +43,6 @@ export const getBlogEntry = (req,res) => {
 };
 
 export const postBlogEntry = (req,res) => {
-    console.log("postBlogEntry");
     const postCheckQuery = "SELECT id FROM posts WHERE id = ?";
     
     db.query(postCheckQuery, [req.body.email], (err,data) => {
@@ -76,7 +73,6 @@ export const postBlogEntry = (req,res) => {
 
                 db.query(addCategoryQuery, [addCategoryValues], (addCategoryErr,addCategoryData) => {
                     if (addCategoryErr) {
-                        console.log(addCategoryErr);
                         return res.status(400).json("There was an error with your post");
                     }
                     
@@ -89,8 +85,6 @@ export const postBlogEntry = (req,res) => {
 
                         //use new cat id value
                         const new_category_id = checkCategoryQuerydata[0].id;
-
-                        //use existing cat id value
                         const addPostQuery = "INSERT INTO posts(`title`,`category_id`,`content`,`author_name`,`created_at`,`user_id`,`status`) VALUES (?)";
                         const addPostQueryValues = [
                             req.body.title,
@@ -113,8 +107,8 @@ export const postBlogEntry = (req,res) => {
             }
             else{
                 //use existing cat id value
-                const addPostQuery = "INSERT INTO posts(`title`,`category_id`,`content`,`author_name`,`created_at`,`user_id`,`status`) VALUES (?)";
-                const addPostQueryValues = [
+                const addCategoryQuery = "INSERT INTO posts(`title`,`category_id`,`content`,`author_name`,`created_at`,`user_id`,`status`) VALUES (?)";
+                const addCategoryValues = [
                     req.body.title,
                     checkCategoryQuerydata[0].id,
                     req.body.content,
@@ -124,7 +118,97 @@ export const postBlogEntry = (req,res) => {
                     req.body.status
                 ];
 
-                db.query(addPostQuery, [addPostQueryValues], (err,data) => {
+                db.query(addCategoryQuery, [addCategoryValues], (err,data) => {
+                    if (err) {
+                        return res.status(400).json("There was an error with your post");
+                    }
+                    return res.status(200).json("New blog entry successfully posted");
+                });
+            }
+        });
+    });
+};
+
+export const updateBlogEntry = (req,res) => {
+    const postCheckQuery = "SELECT id FROM posts WHERE id = ?";
+    
+    db.query(postCheckQuery, [req.body.id], (err,data) => {
+        if (err) {
+            return res.json(err);
+        }
+        if (data.length === 0) {
+            return res.status(404).json("Blog entry not found");
+        }
+        
+        //check if category name exists
+        const checkCategoryQuery = "SELECT id FROM categories WHERE category_name = ?";
+        const checkCategoryQueryValues = [
+            req.body.category_name
+        ]
+        db.query(checkCategoryQuery, [checkCategoryQueryValues], (checkCategoryQueryerr,checkCategoryQuerydata) => {
+            if (checkCategoryQueryerr) {
+                return res.json(checkCategoryQueryerr);
+            }
+
+            if (checkCategoryQuerydata.length === 0) {
+                //doesnt exist so add cat
+                const addCategoryQuery = "INSERT INTO categories(`category_name`) VALUES (?)";
+                const addCategoryValues = [
+                    req.body.category_name
+                ];
+
+                db.query(addCategoryQuery, [addCategoryValues], (addCategoryErr,addCategoryData) => {
+                    if (addCategoryErr) {
+                        return res.status(400).json("There was an error with your post");
+                    }
+                    
+                    //new cat added successfully
+                    //lookup new cat id value
+                    db.query(checkCategoryQuery, [checkCategoryQueryValues], (checkCategoryQueryerr,checkCategoryQuerydata) => {
+                        if (checkCategoryQueryerr) {
+                            return res.json(checkCategoryQueryerr);
+                        }
+
+                        //use new cat id value
+                        const new_category_id = checkCategoryQuerydata[0].id;
+
+                        //use existing cat id value
+                        const updatePostQuery = "UPDATE posts SET `title`=?,`category_id`=?,`content`=?,`author_name`=?,`created_at`=?,`user_id`=?,`status`=? WHERE id = ? ";
+                        const updatePostQueryValues = [
+                            req.body.title,
+                            new_category_id,
+                            req.body.content,
+                            req.body.author_name,
+                            new Date(),
+                            req.body.user_id,
+                            req.body.status,
+                            req.params.id
+                        ];
+
+                        db.query(updatePostQuery, [...updatePostQueryValues], (err,data) => {
+                            if (err) {
+                                return res.status(400).json("There was an error with your post");
+                            }
+                            return res.status(200).json("New blog entry successfully posted");
+                        });
+                    });
+                });
+            }
+            else{
+                //use existing cat id value
+                const updatePostQuery = "UPDATE posts SET `title`=?,`category_id`=?,`content`=?,`author_name`=?,`created_at`=?,`user_id`=?,`status`=? WHERE id = ? ";
+                const updatePostQueryValues = [
+                    req.body.title,
+                    checkCategoryQuerydata[0].id,
+                    req.body.content,
+                    req.body.author_name,
+                    new Date(),
+                    req.body.user_id,
+                    req.body.status,
+                    req.params.id
+                ];
+
+                db.query(updatePostQuery, [...updatePostQueryValues], (err,data) => {
                     if (err) {
                         return res.status(400).json("There was an error with your post");
                     }
@@ -139,8 +223,6 @@ export const deleteBlogEntry = (req,res) => {
     res.json("");
 };
 
-export const updateBlogEntry = (req,res) => {
-    res.json("");
-};
+
 
 

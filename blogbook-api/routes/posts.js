@@ -14,7 +14,7 @@ router.get("/blogEntries", getBlogEntries);
 router.get("/blogCategories", getBlogCategories);
 router.get("/blogEntry/:id", getBlogEntry);
 router.post("/", postBlogEntry);
+router.put("/:id", updateBlogEntry);
 router.delete("/:id", deleteBlogEntry);
-router.put("/", updateBlogEntry);
 
 export default router;

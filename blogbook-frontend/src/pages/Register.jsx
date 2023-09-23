@@ -29,7 +29,7 @@ const Register = () => {
     };
 
     return (
-        <div class="content_box">
+        <div className="content_box">
             <h1>Register</h1>
             <form>
                 <input required type="email" placeholder="Email" name="email" onChange={handleChange}></input>

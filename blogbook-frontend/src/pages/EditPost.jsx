@@ -1,0 +1,79 @@
+import React from "react";
+import { useState, useContext, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { AuthContext } from "../context/authContext.js";
+import axios from "axios";
+
+
+const Post = () => {
+    const { currentUser, logout } = useContext(AuthContext);
+    console.log(currentUser)
+    const [inputs, setInputs] = useState({
+        title: "",
+        content: "",
+        author_name: "",
+        category_name: "",
+        status: 0,
+    }); 
+
+    //const [blogEntry, setBlogEntry] = useState({});
+    const location = useLocation();
+    const blogEntryId = location.pathname.split("/")[2];
+
+    const [err,setError] =  useState(null);
+
+    const navigate = useNavigate();
+
+    const handleChange = (e) => {
+        setInputs(inputs => ({...inputs, [e.target.name]: e.target.value}));
+    };
+
+    useEffect(() => {
+      const fetchBlogEntry = async() => {
+        if (blogEntryId) {
+            try {
+                const res = await axios.get(`/posts/blogEntry/${blogEntryId}`)
+                console.log(res.data[0])
+                setInputs(res.data[0]);
+            }
+            catch (err) {
+                setError(err.response.data);
+            }
+        }
+      };
+      fetchBlogEntry();
+    }, [blogEntryId]);
+
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        try {
+            inputs.user_id = currentUser.id;
+            const res = await axios.put(`/posts/${blogEntryId}`, inputs)
+            console.log(res)
+            navigate("/activity/");
+        }
+        catch (err) {
+            setError(err.response.data);
+        }
+    };
+    console.log(inputs.status);
+    console.log(inputs);
+    return (
+        <div className="content_box">
+            <form>
+                <input required type="text" placeholder="Title" name="title" value={inputs.title || ""} onChange={handleChange}></input>
+                <textarea required type="textarea" placeholder="Content" name="content"  value={inputs.content || ""} onChange={handleChange}></textarea>
+                <input required type="text" placeholder="Author Name" name="author_name" value={inputs.author_name || ""}  onChange={handleChange}></input>
+                <input required type="text" placeholder="Category Name" name="category_name" value={inputs.category_name || ""} onChange={handleChange}></input>
+                <select value={inputs.status || ""} name="status" onChange={handleChange}>
+                    <option value="0">Draft</option>
+                    <option value="1">Published</option>
+                </select>
+                <button onClick={handleSubmit}>Post</button>
+                {err && <p>{err}</p>}
+            </form>
+        </div>
+    );
+}
+
+export default Post;
