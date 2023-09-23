@@ -12,6 +12,21 @@ export const getBlogEntries = (req,res) => {
         });
 };
 
+export const getBlogCategories = (req,res) => {
+    const getBlogEntriesQuery = `SELECT * FROM
+                                (SELECT category_id, COUNT(id) AS category_post_count FROM posts GROUP BY category_id) category_post_counts
+                                LEFT JOIN categories on category_post_counts.category_id = categories.id
+                                ORDER BY category_post_count DESC
+                                LIMIT 10`;
+
+
+        db.query(getBlogEntriesQuery, (err,data) => {
+            if (err) return res.send(err);
+
+            return res.status(200).json(data);
+        });
+};
+
 export const getBlogEntry = (req,res) => {
     res.json("");
 };

@@ -1,6 +1,7 @@
 import express from "express";
 import { 
     getBlogEntries, 
+    getBlogCategories,
     getBlogEntry, 
     postBlogEntry, 
     deleteBlogEntry,
@@ -9,8 +10,9 @@ import {
 
 const router = express.Router();
 
-router.get("/", getBlogEntries);
-router.get("/:id", getBlogEntry);
+router.get("/blogEntries", getBlogEntries);
+router.get("/blogCategories", getBlogCategories);
+router.get("/blogEntry/:id", getBlogEntry);
 router.post("/", postBlogEntry);
 router.delete("/:id", deleteBlogEntry);
 router.put("/", updateBlogEntry);

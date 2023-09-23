@@ -85,10 +85,6 @@ const Activity = () => {
 
     const count = Math.ceil(blogEntries.length / 20);
     const blogEntryPage = usePagination(blogEntries, 20);
-    console.log("Activity blogEntryPage")
-    console.log(blogEntryPage)
-    console.log("Activity blogEntryPage length")
-    console.log(blogEntryPage.currentData().length)
 
     const handleChange = (e,p) => {
         setPage(p);
@@ -98,7 +94,7 @@ const Activity = () => {
     useEffect(() => {
         const fetchBlogEntries = async() => {
             try {
-                const res = await axios.get("/posts")
+                const res = await axios.get("/posts/blogEntries")
                 setBlogEntries(res.data);
             }
             catch (err) {
