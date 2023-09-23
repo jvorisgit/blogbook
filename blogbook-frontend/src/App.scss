@@ -11,6 +11,11 @@ form {
   background-color: $mediumgray;
   width: 400px;
   gap: 20px;
+
+  h1 {
+    text-align: center;
+    color: black;
+  }
   
   button {
     padding: 10px;
@@ -49,7 +54,7 @@ h1 {
   --bs-btn-hover-color: lightgray;
 }
 
-.user_authentication {
+.content_box {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -57,3 +62,19 @@ h1 {
   height:100vh;
   background-color: black;
 } 
+
+.blogEntryPreview {
+  text-decoration: none;
+} 
+
+.view {
+  display: flex;
+  gap: 50px;
+
+  .content {
+    flex: 5;
+  }
+  .menu {
+    flex: 2;
+  }
+}

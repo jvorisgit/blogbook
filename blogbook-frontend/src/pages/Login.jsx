@@ -31,7 +31,7 @@ const Login = () => {
     };
 
     return (
-        <div class="user_authentication">
+        <div class="content_box">
             <h1>Login</h1>
             <form>
                 <input required type="email" placeholder="Email" name="email" onChange={handleChange}></input>

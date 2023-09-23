@@ -21,7 +21,6 @@ const BlogBookSidebar = () => {
     const fetchCategories = async() => {
         try {
             const res = await axios.get("/posts/blogCategories")
-            console.log("1" + res.data);
             settopCategories(res.data);
         }
         catch (err) {

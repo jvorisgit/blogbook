@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import axios from "axios";
 import format from "date-fns/format";
 import usePagination from "../utils/pagination.js";
+import { Link, useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -44,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }}));
 
-function GridItem({ classes, title, content, category_name, author_name, created_at }) {  
+function GridItem({ classes, title, content, category_name, author_name, created_at, id }) {  
 
     var contentSummary = content;
     if (content.length > 50) {
@@ -53,15 +54,17 @@ function GridItem({ classes, title, content, category_name, author_name, created
 
     return (
       <Grid item xs={12} sm={6} md={3}>
-        <Paper className={classes.paper}>
-        <b>{title}</b><br></br>
-        <br></br>
-        {contentSummary}<br></br>
-        <br></br>
-        Category: {category_name}<br></br>
-        Contributor: {author_name}<br></br>
-        Publication Date: {format(new Date(created_at), "yyyy/MM/dd")}<br></br>
-        </Paper>
+        <Link class="blogEntryPreview" to={`/view/${id}`}>
+            <Paper className={classes.paper}>
+            <b>{title}</b><br></br>
+            <br></br>
+            {contentSummary}<br></br>
+            <br></br>
+            Category: {category_name}<br></br>
+            Contributor: {author_name}<br></br>
+            Publication Date: {format(new Date(created_at), "yyyy/MM/dd")}<br></br>
+            </Paper>
+        </Link>
       </Grid>
 )};
 
@@ -113,6 +116,7 @@ const Activity = () => {
                     blogEntryPage.currentData().map((blogEntry) => {
                     return (<GridItem 
                                 classes={classes} 
+                                id={blogEntry.id}
                                 title={blogEntry.title}
                                 content={blogEntry.content}
                                 category_name={blogEntry.category_name}
