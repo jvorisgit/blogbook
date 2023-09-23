@@ -49,22 +49,22 @@ const BlogBookSidebar = () => {
 
         {topCategories.map((category) => {
           if ((category.id % 7) === 0) {
-            return (<MenuItem icon={<ReceiptOutlinedIcon />} >{category.category_name}</MenuItem>);
+            return (<MenuItem icon={<ReceiptOutlinedIcon />} >{category.category_name} - {category.category_post_count} </MenuItem>);
           }
           else if ((category.id % 5) === 0) {
-            return (<MenuItem icon={<ContactsOutlinedIcon />} >{category.category_name}</MenuItem>);
+            return (<MenuItem icon={<ContactsOutlinedIcon />} >{category.category_name}  - {category.category_post_count} </MenuItem>);
           }
           else if ((category.id % 3) === 0)
           {
-            return (<MenuItem icon={<HomeOutlinedIcon />} >{category.category_name}</MenuItem>);
+            return (<MenuItem icon={<HomeOutlinedIcon />} >{category.category_name}  - {category.category_post_count} </MenuItem>);
           }
           else if ((category.id % 2) === 0)
           {
-            return (<MenuItem icon={<CalendarTodayOutlinedIcon />} >{category.category_name}</MenuItem>);
+            return (<MenuItem icon={<CalendarTodayOutlinedIcon />} >{category.category_name}  - {category.category_post_count} </MenuItem>);
           }
           else 
           {
-            return (<MenuItem icon={<PeopleOutlinedIcon />} >{category.category_name}</MenuItem>);
+            return (<MenuItem icon={<PeopleOutlinedIcon />} >{category.category_name}  - {category.category_post_count} </MenuItem>);
           }
        })}
       </Menu>
