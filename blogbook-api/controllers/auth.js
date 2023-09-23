@@ -4,7 +4,7 @@ import { db } from "../db.js";
 
 export const register = (req,res) => {
     console.log("register");
-    const emailCheckQuery = "SELECT * FROM users WHERE email = ?";
+    const emailCheckQuery = "SELECT id, email, password FROM users WHERE email = ?";
     
     db.query(emailCheckQuery, [req.body.email], (err,data) => {
         if (err) {
@@ -34,7 +34,7 @@ export const register = (req,res) => {
 };
 
 export const login = (req,res) => {
-    const emailCheckQuery = "SELECT * FROM users WHERE email = ?";
+    const emailCheckQuery = "SELECT id, email, password FROM users WHERE email = ?";
     
     db.query(emailCheckQuery, [req.body.email], (err,data) => {
         console.log(req.body);
