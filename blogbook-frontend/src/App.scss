@@ -1,4 +1,4 @@
-$lightgray: #afafaf;
+$mediumgray: #afafaf;
 
 body {
   background: black;
@@ -8,14 +8,14 @@ form {
   display: flex;
   flex-direction: column;
   padding: 20px;
-  background-color: $lightgray;
-  width: 300px;
+  background-color: $mediumgray;
+  width: 400px;
   gap: 20px;
   
   button {
     padding: 10px;
     border: none;
-    color: $lightgray;
+    color: $mediumgray;
     background-color: black;
     cursor: pointer;
   }
@@ -28,6 +28,7 @@ form {
 
   p {
     font-size: 15px;
+    text-align: center;
   }
 
   span {
@@ -38,8 +39,14 @@ form {
 }
 
 h1 {
-  color:$lightgray;
+  color:$mediumgray;
   margin-bottom:20px;
+}
+
+.btn-link {
+  color:$mediumgray;
+  text-decoration: none;
+  --bs-btn-hover-color: lightgray;
 }
 
 .user_authentication {
