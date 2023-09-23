@@ -4,11 +4,16 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
 import { useState, useEffect } from 'react';
 import axios from "axios";
 import format from "date-fns/format";
 import usePagination from "../utils/pagination.js";
 import { Link, useNavigate } from "react-router-dom";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useContext } from "react";
+import { AuthContext } from "../context/authContext.js";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -45,7 +50,20 @@ const useStyles = makeStyles((theme) => ({
     }
 }}));
 
-function GridItem({ classes, title, content, category_name, author_name, created_at, id }) {  
+function GridItem({ classes, title, content, category_name, author_name, created_at, id, post_user_id }) {  
+    const { currentUser } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleDelete = async ()=>{
+        try {
+          await axios.delete(`/posts/${id}`);
+          navigate("/activity");
+          navigate(0);
+        } 
+        catch (err) {
+          console.log(err);
+        }
+    };
 
     var contentSummary = content;
     if (content.length > 50) {
@@ -54,17 +72,29 @@ function GridItem({ classes, title, content, category_name, author_name, created
 
     return (
       <Grid item xs={12} sm={6} md={3}>
-        <Link className="blogEntryPreview" to={`/view/${id}`}>
             <Paper className={classes.paper}>
+                <Link className="blogEntryPreview" to={`/view/${id}`}>
             <b>{title}</b><br></br>
             <br></br>
             {contentSummary}<br></br>
             <br></br>
             Category: {category_name}<br></br>
+            userid: {post_user_id}<br></br>
             Contributor: {author_name}<br></br>
             Publication Date: {format(new Date(created_at), "yyyy/MM/dd")}<br></br>
+            </Link>
+            {((currentUser) && (currentUser.id == post_user_id)) && 
+            <div>
+                <Link className="blogEntryPreview" to={`/post/${id}`}>
+                    <IconButton>
+                        <EditNoteIcon />
+                    </IconButton>
+                </Link>
+                    <IconButton onClick={handleDelete} >
+                        <DeleteIcon />
+                    </IconButton>
+            </div>}
             </Paper>
-        </Link>
       </Grid>
 )};
 
@@ -85,6 +115,7 @@ function ActivityPagination({ handleChange, count, page }) {
 const Activity = () => {
     const [blogEntries, setBlogEntries] = useState([]);
     const [page, setPage] = useState(1);
+    const navigate = useNavigate();
 
     const count = Math.ceil(blogEntries.length / 20);
     const blogEntryPage = usePagination(blogEntries, 20);
@@ -109,6 +140,7 @@ const Activity = () => {
 
     const classes = useStyles();
 
+    
     return (
         <div>
             <Grid container spacing={1}>
@@ -123,6 +155,7 @@ const Activity = () => {
                                 category_name={blogEntry.category_name}
                                 author_name={blogEntry.author_name}
                                 created_at={blogEntry.created_at}
+                                post_user_id={blogEntry.user_id}
                             >
                             </GridItem>);
                     })

@@ -58,22 +58,34 @@ const Post = () => {
     };
     console.log(inputs.status);
     console.log(inputs);
-    return (
-        <div className="content_box">
-            <form>
-                <input required type="text" placeholder="Title" name="title" value={inputs.title || ""} onChange={handleChange}></input>
-                <textarea required type="textarea" placeholder="Content" name="content"  value={inputs.content || ""} onChange={handleChange}></textarea>
-                <input required type="text" placeholder="Author Name" name="author_name" value={inputs.author_name || ""}  onChange={handleChange}></input>
-                <input required type="text" placeholder="Category Name" name="category_name" value={inputs.category_name || ""} onChange={handleChange}></input>
-                <select value={inputs.status || ""} name="status" onChange={handleChange}>
-                    <option value="0">Draft</option>
-                    <option value="1">Published</option>
-                </select>
-                <button onClick={handleSubmit}>Post</button>
-                {err && <p>{err}</p>}
-            </form>
-        </div>
-    );
+    if ((currentUser) && (currentUser.id == inputs.user_id))
+    {
+        return (
+            <div className="content_box">
+                <form>
+                    <input required type="text" placeholder="Title" name="title" value={inputs.title || ""} onChange={handleChange}></input>
+                    <textarea required type="textarea" placeholder="Content" name="content"  value={inputs.content || ""} onChange={handleChange}></textarea>
+                    <input required type="text" placeholder="Author Name" name="author_name" value={inputs.author_name || ""}  onChange={handleChange}></input>
+                    <input required type="text" placeholder="Category Name" name="category_name" value={inputs.category_name || ""} onChange={handleChange}></input>
+                    <select value={inputs.status || ""} name="status" onChange={handleChange}>
+                        <option value="0">Draft</option>
+                        <option value="1">Published</option>
+                    </select>
+                    <button onClick={handleSubmit}>Post</button>
+                    {err && <p>{err}</p>}
+                </form>
+            </div>
+        );
+    }
+    else {
+        return (
+            <div className="content_box">
+                <form>
+                    <h1>Unauthorized</h1>
+                </form>
+            </div>
+        );
+    }
 }
 
 export default Post;

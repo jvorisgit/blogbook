@@ -33,7 +33,7 @@ const BlogBookSidebar = () => {
   const { collapseSidebar } = useProSidebar();
 
   return (
-    <Sidebar style={{ height: "108vh" }} handleChange={handleChange}>
+    <Sidebar style={{ height: "100vh" }} handleChange={handleChange}>
       <Menu >
         <MenuItem
           icon={<MenuOutlinedIcon />}
