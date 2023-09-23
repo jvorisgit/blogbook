@@ -11,7 +11,7 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 const BlogBookSidebar = () => {
     const { collapseSidebar } = useProSidebar();
     return (
-        <Sidebar style={{ height: "100vh" }}>
+        <Sidebar style={{ height: "108vh" }}>
         <Menu>
           <MenuItem
             icon={<MenuOutlinedIcon />}
