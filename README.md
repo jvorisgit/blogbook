@@ -5,7 +5,7 @@ BlogBook is a mini-blogging service written with React and Node. Features includ
 - User authentication
 - Blog entry creation and management
 
-![image](https://github.com/jvorisgit/blogbook/assets/11342956/23f7bd9f-3608-4a45-a4e0-e0a30ba06a59)
+![blogbook_screenshot](https://github.com/jvorisgit/blogbook/assets/11342956/29a0e20e-255c-4c89-b095-3adae337b265)
 
 ## Installation
 BlogBook requires the installation of 3 core components:
