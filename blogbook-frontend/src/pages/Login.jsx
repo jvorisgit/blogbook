@@ -13,7 +13,12 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    const { login } = useContext(AuthContext);
+    const { login, currentUser } = useContext(AuthContext);
+
+    //if user is already logged in, redirect them to the activity feed
+    if (currentUser) {
+        navigate("/activity");
+    }
 
     const handleChange = (e) => {
         setInputs(inputs => ({...inputs, [e.target.name]: e.target.value}));
@@ -23,7 +28,11 @@ const Login = () => {
         e.preventDefault();
         try {
             const res = await login(inputs);
-            navigate("/activity");
+            if (res === undefined)
+            {
+                setError("Invalid credentials");
+            }
+            navigate("/login",{err});
         }
         catch (err) {
             setError(err.response.data);
