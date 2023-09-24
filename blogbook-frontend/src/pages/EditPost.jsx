@@ -62,7 +62,7 @@ const Post = () => {
                 <form>
                     <input required type="text" placeholder="Title" name="title" value={inputs.title || ""} onChange={handleChange}></input>
                     <textarea required type="textarea" placeholder="Content" name="content"  value={inputs.content || ""} onChange={handleChange}></textarea>
-                    <input required type="text" placeholder="Author Name" name="author_name" value={inputs.author_name || ""}  onChange={handleChange}></input>
+                    <input readOnly={true} required type="text" placeholder="Author Name" name="author_name" value={inputs.author_name || ""}  onChange={handleChange}></input>
                     <input required type="text" placeholder="Category Name" name="category_name" value={inputs.category_name || ""} onChange={handleChange}></input>
                     <select value={inputs.status || ""} name="status" onChange={handleChange}>
                         <option value="0">Draft</option>

@@ -70,8 +70,6 @@ export const login = (req,res) => {
 //handle logout requests
 export const logout = (req,res) => {
     //logut by deleting access token cookie
-    console.log("auth route logout")
-    ///console.log(res)
     res.clearCookie("access_token",{
         sameSite:"None",
         secure:true
