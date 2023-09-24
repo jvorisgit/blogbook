@@ -39,7 +39,7 @@ export const getBlogCategories = (req,res) => {
 //handle requests for a single blog entry
 export const getBlogEntry = (req,res) => {
     const getBlogEntryQuery = `SELECT posts.id AS id, posts.title AS title, posts.content AS content, posts.category_id AS category_id, posts.author_name AS author_name, posts.created_at AS created_at, posts.status AS status,
-                                categories.category_name AS category_name
+                                posts.user_id AS user_id, categories.category_name AS category_name
                                 FROM posts LEFT JOIN categories ON posts.category_id = categories.id WHERE posts.id = ?`;
 
        db.query(getBlogEntryQuery, [req.params.id], (err,data) => {
@@ -146,8 +146,8 @@ export const updateBlogEntry = (req,res) => {
     jwt.verify(token,"blogbooksecretkey",(err, userInfo) => {
         if (err) {
             return res.status(403).json("Invalid access token");
+            
         }
-        
         const postCheckQuery = "SELECT id FROM posts WHERE id = ?";
         db.query(postCheckQuery, [req.body.id], (err,data) => {
             if (err) {

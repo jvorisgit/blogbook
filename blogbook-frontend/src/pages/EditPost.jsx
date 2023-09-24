@@ -13,7 +13,7 @@ const Post = () => {
         content: "",
         author_name: "",
         category_name: "",
-        status: 0,
+        status: 0
     }); 
 
     const location = useLocation();
