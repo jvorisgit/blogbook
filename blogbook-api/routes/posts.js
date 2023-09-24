@@ -11,6 +11,7 @@ import {
 const router = express.Router();
 
 router.get("/blogEntries", getBlogEntries);
+router.get("/blogEntries/:id", getBlogEntries);
 router.get("/blogCategories", getBlogCategories);
 router.get("/blogEntry/:id", getBlogEntry);
 router.post("/", postBlogEntry);

@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import axios from "axios";
 import format from "date-fns/format";
 import usePagination from "../utils/pagination.js";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useContext } from "react";
@@ -120,7 +120,10 @@ function ActivityPagination({ handleChange, count, page }) {
 const Activity = () => {
     const [blogEntries, setBlogEntries] = useState([]);
     const [page, setPage] = useState(1);
-    const navigate = useNavigate();
+
+    const location = useLocation();
+    const category_id = ((location.pathname.split("/")[2]) || "");
+    console.log(category_id);
 
     const count = Math.ceil(blogEntries.length / 20);
     const blogEntryPage = usePagination(blogEntries, 20);
@@ -133,7 +136,7 @@ const Activity = () => {
     useEffect(() => {
         const fetchBlogEntries = async() => {
             try {
-                const res = await axios.get("/posts/blogEntries")
+                const res = await axios.get(`/posts/blogEntries/${category_id}`)
                 setBlogEntries(res.data);
             }
             catch (err) {
@@ -141,7 +144,7 @@ const Activity = () => {
             }
         };
         fetchBlogEntries();
-    }, []);
+    }, [category_id]);
 
     const classes = useStyles();
 

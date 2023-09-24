@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 //handle requests for a list of blog entries
 export const getBlogEntries = (req,res) => {
     //if a category is specified, filter for it
-    const getBlogEntriesQuery = req.query.category 
+    const getBlogEntriesQuery = req.params.id 
         ? `SELECT posts.id AS id, posts.title AS title, posts.content AS content, posts.category_id AS category_id, posts.author_name AS author_name, posts.created_at AS created_at,
             posts.user_id AS user_id, categories.category_name 
             AS category_name FROM posts LEFT JOIN categories ON posts.category_id = categories.id WHERE status=1 AND category_id = ? ORDER BY created_at DESC`
@@ -12,7 +12,7 @@ export const getBlogEntries = (req,res) => {
             posts.user_id AS user_id, categories.category_name 
             AS category_name FROM posts LEFT JOIN categories ON posts.category_id = categories.id  WHERE status=1 ORDER BY created_at DESC`
 
-        db.query(getBlogEntriesQuery, [req.query.category], (err,data) => {
+        db.query(getBlogEntriesQuery, [req.params.id], (err,data) => {
             if (err) return res.send(err);
 
             return res.status(200).json(data);

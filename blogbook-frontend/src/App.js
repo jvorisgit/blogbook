@@ -47,6 +47,10 @@ const router = createBrowserRouter(
           element: <Activity></Activity>
         },
         {
+          path: "/activity/:id",
+          element: <Activity></Activity>
+        },
+        {
           path: "/Login",
           element: <Login></Login>
         },
