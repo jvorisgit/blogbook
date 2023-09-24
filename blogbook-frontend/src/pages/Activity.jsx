@@ -120,9 +120,11 @@ function ActivityPagination({ handleChange, count, page }) {
 const Activity = () => {
     const [blogEntries, setBlogEntries] = useState([]);
     const [page, setPage] = useState(1);
-
+    const { currentUser } = useContext(AuthContext);
     const location = useLocation();
-    const category_id = ((location.pathname.split("/")[2]) || "");
+
+    const filter = ((location.pathname.split("/")[2]) || "");
+    const category_id = ((location.pathname.split("/")[3]) || "");
     console.log(category_id);
 
     const count = Math.ceil(blogEntries.length / 20);
@@ -136,49 +138,57 @@ const Activity = () => {
     useEffect(() => {
         const fetchBlogEntries = async() => {
             try {
-                const res = await axios.get(`/posts/blogEntries/${category_id}`)
-                setBlogEntries(res.data);
+                if (filter === "drafts") {
+                    console.log(filter)
+                    const res = await axios.get(`/posts/blogEntries/drafts`)
+                    setBlogEntries(res.data);
+                }
+                else {
+                    const res = await axios.get(`/posts/blogEntries/${category_id}`)
+                    setBlogEntries(res.data);
+                }    
             }
             catch (err) {
                 console.log(err);
             }
         };
         fetchBlogEntries();
-    }, [category_id]);
+    }, [category_id, currentUser]);
 
     const classes = useStyles();
 
-    
-    return (
-        <div>
-            <Grid container spacing={1}>
-                {
-                    blogEntryPage.currentData().map((blogEntry) => {
-                    return (<GridItem 
-                                key={blogEntry.id}
-                                classes={classes} 
-                                id={blogEntry.id}
-                                title={blogEntry.title}
-                                content={blogEntry.content}
-                                category_name={blogEntry.category_name}
-                                author_name={blogEntry.author_name}
-                                created_at={blogEntry.created_at}
-                                post_user_id={blogEntry.user_id}
-                            >
-                            </GridItem>);
-                    })
-                }
-            </Grid>
-            <Stack spacing={2}>
-                <ActivityPagination 
-                    handleChange={handleChange}
-                    count={count}
-                    page={page}
-                >
-                </ActivityPagination>
-            </Stack>
-        </div>
-    );
+    if ((filter != "drafts") || currentUser) {
+        return (
+            <div>
+                <Grid container spacing={1}>
+                    {
+                        blogEntryPage.currentData().map((blogEntry) => {
+                        return (<GridItem 
+                                    key={blogEntry.id}
+                                    classes={classes} 
+                                    id={blogEntry.id}
+                                    title={blogEntry.title}
+                                    content={blogEntry.content}
+                                    category_name={blogEntry.category_name}
+                                    author_name={blogEntry.author_name}
+                                    created_at={blogEntry.created_at}
+                                    post_user_id={blogEntry.user_id}
+                                >
+                                </GridItem>);
+                        })
+                    }
+                </Grid>
+                <Stack spacing={2}>
+                    <ActivityPagination 
+                        handleChange={handleChange}
+                        count={count}
+                        page={page}
+                    >
+                    </ActivityPagination>
+                </Stack>
+            </div>
+        );
+    }
 }
 
 export default Activity;

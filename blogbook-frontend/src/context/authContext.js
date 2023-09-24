@@ -19,7 +19,7 @@ export const AuthContextProvider = ({ children }) => {
 
     const logout = async(inputs) => {
         try {
-            await axios.post("auth/logout");
+            await axios.post("/auth/logout");
         }
         catch (err) {
             console.log(err);

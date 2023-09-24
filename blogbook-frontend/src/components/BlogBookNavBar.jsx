@@ -10,7 +10,6 @@ import { AuthContext } from "../context/authContext.js";
 function BlogBookNavBar() {
 
   const { currentUser, logout } = useContext(AuthContext);
-
   //users who aren't authenticated should see: activity, register, login
   //users who are authenticated should see: activity, new post, Hi <email>, logout
   return (
@@ -20,6 +19,7 @@ function BlogBookNavBar() {
           <Nav className="justify-content-start" style={{ width: "100%" }}>
             <Nav.Link href="/activity">Activity</Nav.Link>
             {currentUser && <Nav.Link href="/post">New Post</Nav.Link>}
+            {currentUser && <Nav.Link href="/Activity/drafts">Drafts</Nav.Link>}
             {!currentUser && <Navbar.Collapse className="justify-content-end">
                               <Nav.Link href="/register">Register</Nav.Link>
                               <Nav.Link href="/login">Login</Nav.Link>

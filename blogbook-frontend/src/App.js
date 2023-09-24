@@ -47,7 +47,11 @@ const router = createBrowserRouter(
           element: <Activity></Activity>
         },
         {
-          path: "/activity/:id",
+          path: "/activity/category/:id",
+          element: <Activity></Activity>
+        },
+        {
+          path: "/activity/drafts",
           element: <Activity></Activity>
         },
         {

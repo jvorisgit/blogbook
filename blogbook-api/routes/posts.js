@@ -5,12 +5,14 @@ import {
     getBlogEntry, 
     postBlogEntry, 
     deleteBlogEntry,
-    updateBlogEntry
+    updateBlogEntry,
+    getBlogEntryDrafts
 } from "../controllers/posts.js"
 
 const router = express.Router();
 
-router.get("/blogEntries", getBlogEntries);
+router.get("/blogEntries/", getBlogEntries);
+router.get("/blogEntries/drafts", getBlogEntryDrafts);
 router.get("/blogEntries/:id", getBlogEntries);
 router.get("/blogCategories", getBlogCategories);
 router.get("/blogEntry/:id", getBlogEntry);

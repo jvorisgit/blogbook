@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useContext } from "react";
+import { useState, useContext, useLayoutEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext.js";
 
@@ -15,10 +15,11 @@ const Login = () => {
 
     const { login, currentUser } = useContext(AuthContext);
 
-    //if user is already logged in, redirect them to the activity feed
-    if (currentUser) {
-        navigate("/activity");
-    }
+      useLayoutEffect(() => {
+        if (currentUser) {
+            navigate("/activity");
+        }
+    }, [currentUser]);
 
     const handleChange = (e) => {
         setInputs(inputs => ({...inputs, [e.target.name]: e.target.value}));
@@ -32,10 +33,15 @@ const Login = () => {
             {
                 setError("Invalid credentials");
             }
-            navigate("/login",{err});
+            else {
+                
+            }
         }
         catch (err) {
             setError(err.response.data);
+        }
+        finally {
+            navigate("/Login");
         }
     };
 

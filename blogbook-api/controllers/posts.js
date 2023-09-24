@@ -12,11 +12,40 @@ export const getBlogEntries = (req,res) => {
             posts.user_id AS user_id, categories.category_name 
             AS category_name FROM posts LEFT JOIN categories ON posts.category_id = categories.id  WHERE status=1 ORDER BY created_at DESC`
 
-        db.query(getBlogEntriesQuery, [req.params.id], (err,data) => {
+    db.query(getBlogEntriesQuery, [req.params.id], (err,data) => {
+        if (err) return res.send(err);
+
+        return res.status(200).json(data);
+    });
+};
+
+//handle requests for a list of a user's draft blog entries
+export const getBlogEntryDrafts = (req,res) => {
+    //verify that a valid access token was provided in the request
+    if (!req.headers.cookie)
+    {
+        return res.status(401).json("Request not authenticated");
+    }
+    const [name,token] = req.headers.cookie.split("=");
+    if ((name != "access_token")) {
+        return res.status(401).json("Request not authenticated");
+    }
+    jwt.verify(token,"blogbooksecretkey",(err, userInfo) => {
+        if (err) {
+            return res.status(403).json("Invalid access token");
+        }
+
+        //if a category is specified, filter for it
+        const getBlogEntryDraftsQuery = `SELECT posts.id AS id, posts.title AS title, posts.content AS content, posts.category_id AS category_id, posts.author_name AS author_name, posts.created_at AS created_at,
+            posts.user_id AS user_id, categories.category_name 
+            AS category_name FROM posts LEFT JOIN categories ON posts.category_id = categories.id WHERE status=0 AND user_id = ? ORDER BY created_at DESC`
+
+        db.query(getBlogEntryDraftsQuery, [userInfo.id], (err,data) => {
             if (err) return res.send(err);
 
             return res.status(200).json(data);
         });
+    });
 };
 
 //handle requests for a list of blog categories for the sidebar
@@ -190,16 +219,16 @@ export const updateBlogEntry = (req,res) => {
                             const new_category_id = checkCategoryQuerydata[0].id;
 
                             //use existing cat id value
-                            const updatePostQuery = "UPDATE posts SET `title`=?,`category_id`=?,`content`=?,`author_name`=?,`created_at`=?,`user_id`=?,`status`=? WHERE id = ? ";
+                            const updatePostQuery = "UPDATE posts SET `title`=?,`category_id`=?,`content`=?,`author_name`=?,`created_at`=?,`status`=? WHERE id = ? and user_id = ?";
                             const updatePostQueryValues = [
                                 req.body.title,
                                 new_category_id,
                                 req.body.content,
                                 req.body.author_name,
                                 new Date(),
-                                req.body.user_id,
                                 req.body.status,
-                                req.params.id
+                                req.params.id,
+                                req.body.user_id
                             ];
 
                             db.query(updatePostQuery, [...updatePostQueryValues], (err,data) => {
@@ -213,16 +242,16 @@ export const updateBlogEntry = (req,res) => {
                 }
                 else{
                     //use existing cat id value
-                    const updatePostQuery = "UPDATE posts SET `title`=?,`category_id`=?,`content`=?,`author_name`=?,`created_at`=?,`user_id`=?,`status`=? WHERE id = ? ";
+                    const updatePostQuery = "UPDATE posts SET `title`=?,`category_id`=?,`content`=?,`author_name`=?,`created_at`=?,`status`=? WHERE id = ?  and user_id = ?";
                     const updatePostQueryValues = [
                         req.body.title,
                         checkCategoryQuerydata[0].id,
                         req.body.content,
                         req.body.author_name,
                         new Date(),
-                        req.body.user_id,
                         req.body.status,
-                        req.params.id
+                        req.params.id,
+                        req.body.user_id
                     ];
 
                     db.query(updatePostQuery, [...updatePostQueryValues], (err,data) => {

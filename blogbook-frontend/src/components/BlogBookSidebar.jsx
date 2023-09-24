@@ -51,22 +51,22 @@ const BlogBookSidebar = () => {
 
         {topCategories.map((category) => {
           if ((category.id % 7) === 0) {
-            return (<MenuItem className="sidebar-item" component={<Link></Link>} to={`/Activity/${category.category_id}`} key={category.category_name} icon={<ReceiptOutlinedIcon />} >{category.category_name} - {category.category_post_count} </MenuItem>);
+            return (<MenuItem className="sidebar-item" component={<Link></Link>} to={`/Activity/category/${category.category_id}`} key={category.category_name} icon={<ReceiptOutlinedIcon />} >{category.category_name} - {category.category_post_count} </MenuItem>);
           }
           else if ((category.id % 5) === 0) {
-            return (<MenuItem className="sidebar-item" component={<Link></Link>} to={`/Activity/${category.category_id}`} key={category.category_name} icon={<ContactsOutlinedIcon />} >{category.category_name}  - {category.category_post_count} </MenuItem>);
+            return (<MenuItem className="sidebar-item" component={<Link></Link>} to={`/Activity/category/${category.category_id}`} key={category.category_name} icon={<ContactsOutlinedIcon />} >{category.category_name}  - {category.category_post_count} </MenuItem>);
           }
           else if ((category.id % 3) === 0)
           {
-            return (<MenuItem className="sidebar-item" component={<Link></Link>} to={`/Activity/${category.category_id}`} key={category.category_name} icon={<HomeOutlinedIcon />} >{category.category_name}  - {category.category_post_count} </MenuItem>);
+            return (<MenuItem className="sidebar-item" component={<Link></Link>} to={`/Activity/category/${category.category_id}`} key={category.category_name} icon={<HomeOutlinedIcon />} >{category.category_name}  - {category.category_post_count} </MenuItem>);
           }
           else if ((category.id % 2) === 0)
           {
-            return (<MenuItem className="sidebar-item" component={<Link></Link>} to={`/Activity/${category.category_id}`} key={category.category_name} icon={<CalendarTodayOutlinedIcon />} >{category.category_name}  - {category.category_post_count} </MenuItem>);
+            return (<MenuItem className="sidebar-item" component={<Link></Link>} to={`/Activity/category/${category.category_id}`} key={category.category_name} icon={<CalendarTodayOutlinedIcon />} >{category.category_name}  - {category.category_post_count} </MenuItem>);
           }
           else 
           {
-            return (<MenuItem className="sidebar-item" component={<Link></Link>} to={`/Activity/${category.category_id}`} key={category.category_name} icon={<PeopleOutlinedIcon />} >{category.category_name}  - {category.category_post_count} </MenuItem>);
+            return (<MenuItem className="sidebar-item" component={<Link></Link>} to={`/Activity/category/${category.category_id}`} key={category.category_name} icon={<PeopleOutlinedIcon />} >{category.category_name}  - {category.category_post_count} </MenuItem>);
           }
        })}
       </Menu>
