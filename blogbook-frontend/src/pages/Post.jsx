@@ -37,22 +37,34 @@ const Post = () => {
         }
     };
 
-    return (
-        <div className="content_box">
-            <form>
-                <input required type="text" placeholder="Title" name="title" onChange={handleChange}></input>
-                <textarea required type="textarea" placeholder="Content" name="content"  onChange={handleChange}></textarea>
-                <input required type="text" placeholder="Author Name" name="author_name" onChange={handleChange}></input>
-                <input required type="text" placeholder="Category Name" name="category_name" onChange={handleChange}></input>
-                <select name="status" onChange={handleChange}>
-                    <option value="0">Draft</option>
-                    <option value="1">Published</option>
-                </select>
-                <button onClick={handleSubmit}>Post</button>
-                {err && <p>{err}</p>}
-            </form>
-        </div>
-    );
+    if (currentUser)
+    {
+        return (
+            <div className="content_box">
+                <form>
+                    <input required type="text" placeholder="Title" name="title" onChange={handleChange}></input>
+                    <textarea required type="textarea" placeholder="Content" name="content"  onChange={handleChange}></textarea>
+                    <input required type="text" placeholder="Author Name" name="author_name" onChange={handleChange}></input>
+                    <input required type="text" placeholder="Category Name" name="category_name" onChange={handleChange}></input>
+                    <select name="status" onChange={handleChange}>
+                        <option value="0">Draft</option>
+                        <option value="1">Published</option>
+                    </select>
+                    <button onClick={handleSubmit}>Post</button>
+                    {err && <p>{err}</p>}
+                </form>
+            </div>
+        );
+    }
+    else {
+        return (
+            <div className="content_box">
+                <form>
+                    <h1>Unauthorized</h1>
+                </form>
+            </div>
+        );
+    }
 }
 
 export default Post;
