@@ -4,10 +4,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/authContext.js";
 import axios from "axios";
 
+//The edit post page is the same as the create new blog entry page, but is prefilled to allow users to update their existing entries
 
 const Post = () => {
-    const { currentUser, logout } = useContext(AuthContext);
-    console.log(currentUser)
+    const { currentUser } = useContext(AuthContext);
     const [inputs, setInputs] = useState({
         title: "",
         content: "",
@@ -16,7 +16,6 @@ const Post = () => {
         status: 0,
     }); 
 
-    //const [blogEntry, setBlogEntry] = useState({});
     const location = useLocation();
     const blogEntryId = location.pathname.split("/")[2];
 
@@ -33,7 +32,6 @@ const Post = () => {
         if (blogEntryId) {
             try {
                 const res = await axios.get(`/posts/blogEntry/${blogEntryId}`)
-                console.log(res.data[0])
                 setInputs(res.data[0]);
             }
             catch (err) {
@@ -48,16 +46,15 @@ const Post = () => {
         e.preventDefault();
         try {
             inputs.user_id = currentUser.id;
-            const res = await axios.put(`/posts/${blogEntryId}`, inputs)
-            console.log(res)
+            const res = await axios.put(`/posts/${blogEntryId}`, inputs);
+            //send user to the activity page after they've posted
             navigate("/activity/");
         }
         catch (err) {
             setError(err.response.data);
         }
     };
-    console.log(inputs.status);
-    console.log(inputs);
+
     if ((currentUser) && (currentUser.id == inputs.user_id))
     {
         return (

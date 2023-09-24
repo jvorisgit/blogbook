@@ -9,14 +9,15 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import { useState, useEffect } from 'react';
 import axios from "axios";
 
+//blog sidebar component using react pro sidebar
 const BlogBookSidebar = () => {
   const [topCategories, settopCategories] = useState([]);
 
   const handleChange = (topCategories) => {
-    console.log("handleChange")
     settopCategories(topCategories);
   };
 
+  //get top 10 categories from backend ranked by number of posts
   useEffect(() => {
     const fetchCategories = async() => {
         try {
@@ -32,6 +33,7 @@ const BlogBookSidebar = () => {
   
   const { collapseSidebar } = useProSidebar();
 
+  //i thought it would look bland if all of the sidebar categories had the same icon, so i assigned them randomly for now
   return (
     <Sidebar style={{ height: "100vh" }} handleChange={handleChange}>
       <Menu >

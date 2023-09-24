@@ -4,9 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext.js";
 import axios from "axios";
 
+//Page for creating new blog entries
+
 const Post = () => {
     const { currentUser, logout } = useContext(AuthContext);
-    console.log(currentUser)
     const [inputs, setInputs] = useState({
         title: "",
         content: "",
@@ -20,25 +21,22 @@ const Post = () => {
     const navigate = useNavigate();
 
     const handleChange = (e) => {
-        console.log(e.target.name);
-        console.log(e.target.value);
         setInputs(inputs => ({...inputs, [e.target.name]: e.target.value}));
     };
 
     const handleSubmit = async(e) => {
         e.preventDefault();
         try {
-            inputs.user_id = currentUser.id
-            const res = await axios.post(`/posts/`, inputs)
-            console.log(res)
+            inputs.user_id = currentUser.id;
+            const res = await axios.post(`/posts/`, inputs);
+
             navigate("/activity/");
         }
         catch (err) {
             setError(err.response.data);
         }
     };
-    console.log(inputs.status);
-    console.log(inputs);
+
     return (
         <div className="content_box">
             <form>

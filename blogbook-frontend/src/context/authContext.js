@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
+//use local browser storage to maintain authentication context
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {

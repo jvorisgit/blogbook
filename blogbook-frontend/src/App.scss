@@ -63,6 +63,12 @@ h1 {
   margin-bottom:20px;
 }
 
+.blogEntryPreview {
+  text-decoration: none;
+  color: black;
+} 
+
+
 .btn-link {
   color:$mediumgray;
   text-decoration: none;
@@ -78,10 +84,10 @@ h1 {
   background-color: black;
 } 
 
-.blogEntryPreview {
-  text-decoration: none;
-  color: black;
-} 
+.sidebarcontainer {
+  height: 100%;
+
+}
 
 .view {
   display: flex;

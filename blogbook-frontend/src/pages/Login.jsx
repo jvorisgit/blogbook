@@ -22,7 +22,7 @@ const Login = () => {
     const handleSubmit = async(e) => {
         e.preventDefault();
         try {
-            login(inputs);
+            const res = await login(inputs);
             navigate("/activity");
         }
         catch (err) {

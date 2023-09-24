@@ -9,7 +9,7 @@ app.use("/auth",authRoutes);
 app.use("/posts",postRoutes);
 
 app.get('/test', (req, res) => {
-    res.json("Hello World!");
+    res.json("Server is running");
 });
 
 app.listen(8000, () => {

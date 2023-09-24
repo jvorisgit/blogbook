@@ -1,7 +1,6 @@
 import {
   createBrowserRouter,
   RouterProvider,
-  Route,
   Outlet
 } from "react-router-dom";
 
@@ -21,7 +20,9 @@ const Layout = ()=>{
   return (
     <>
         <div id="app" style={({ height: "100vh" }, { display: "flex" })}>
-          <BlogBookSidebar></BlogBookSidebar>
+          <div className="sidebarcontainer">
+            <BlogBookSidebar></BlogBookSidebar>
+          </div>
           <div style={({ width:'100%', alignContent:"center", height: "100vh" })}>
             <BlogBookNavBar></BlogBookNavBar>
             <Outlet></Outlet>

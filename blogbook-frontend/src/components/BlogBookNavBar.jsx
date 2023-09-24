@@ -6,9 +6,13 @@ import "bootstrap/dist/css/bootstrap.css";
 import { useContext } from "react";
 import { AuthContext } from "../context/authContext.js";
 
+//blog top navigation bar component using react-bootstrap
 function BlogBookNavBar() {
 
   const { currentUser, logout } = useContext(AuthContext);
+
+  //users who aren't authenticated should see: activity, register, login
+  //users who are authenticated should see: activity, new post, Hi <email>, logout
   return (
     <>
       <Navbar bg="dark" data-bs-theme="dark">

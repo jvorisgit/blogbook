@@ -1,8 +1,9 @@
 import React from "react";
-import { useState, useContext, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { AuthContext } from "../context/authContext.js";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
+
+//Page for viewing the full content of blog entries
 
 const View = () => {
     const [blogEntry, setBlogEntry] = useState({});
@@ -13,11 +14,9 @@ const View = () => {
 
     useEffect(() => {
       const fetchBlogEntry = async() => {
-        console.log("fetchBlogEntry")
           try {
-              const res = await axios.get(`/posts/blogEntry/${blogEntryId}`)
+              const res = await axios.get(`/posts/blogEntry/${blogEntryId}`);
               setBlogEntry(res.data[0]);
-              console.log(blogEntry.created_at)
           }
           catch (err) {
               console.log(err);

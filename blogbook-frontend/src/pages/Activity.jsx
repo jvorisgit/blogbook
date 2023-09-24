@@ -15,6 +15,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useContext } from "react";
 import { AuthContext } from "../context/authContext.js";
 
+//The activity page is the central part of the app 
+//It displays a preview of blog posts in a paginated grid
+//Users can edit and delete their own posts from here
+
 const useStyles = makeStyles((theme) => ({
     paper: {
       padding: theme.spacing(1),
@@ -50,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }}));
 
+//component for each individual blog preview rectangle
 function GridItem({ classes, title, content, category_name, author_name, created_at, id, post_user_id }) {  
     const { currentUser } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -65,11 +70,13 @@ function GridItem({ classes, title, content, category_name, author_name, created
         }
     };
 
+    //truncate lengthy content to fit preview
     var contentSummary = content;
     if (content.length > 50) {
         contentSummary = content.slice(0,49) + "...";
     }
 
+    //the edit and delete buttons will only be displayed on a user's own blog entries
     return (
       <Grid item xs={12} sm={6} md={3}>
             <Paper className={classes.paper}>
@@ -78,9 +85,7 @@ function GridItem({ classes, title, content, category_name, author_name, created
             <br></br>
             {contentSummary}<br></br>
             <br></br>
-            Category: {category_name}<br></br>
-            userid: {post_user_id}<br></br>
-            Contributor: {author_name}<br></br>
+            Category: {category_name} Contributor: {author_name}<br></br>
             Publication Date: {format(new Date(created_at), "yyyy/MM/dd")}<br></br>
             </Link>
             {((currentUser) && (currentUser.id == post_user_id)) && 
